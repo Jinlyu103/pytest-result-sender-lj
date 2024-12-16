@@ -6,6 +6,7 @@
 @IDE ：PyCharm
 @Describe: ...
 """
+import time
 from datetime import datetime
 
 import pytest
@@ -74,15 +75,15 @@ def send_result():
                 "zh_cn": {
                     "title": "自动化测试结果",
                     "content": [
-                        [{"tag": "text", "text": f"测试时间: {data['end_time']}"}],
+                        [{"tag": "text", "text": f"测试时间: {data['end_time'].strftime('%Y-%m-%d %H:%M:%S')}"}],
                         [{"tag": "text", "text": f"用例数量: {data['total']}"}],
-                        [{"tag": "text", "text": f"执行时长: {data['duration']}"}],
+                        [{"tag": "text", "text": f"执行时长: {data['duration'].total_seconds()}秒"}],
                         [{"tag": "text", "text": f"测试通过: {data['passed']} "}],
                         [{"tag": "text", "text": f"测试失败: {data['failed']} "}],
                         [
                             {
                                 "tag": "text",
-                                "text": f"测试失败率：{data['passed_ratio']} ",
+                                "text": f"测试通过率：{data['passed_ratio']}",
                             }
                         ],
                         [{"tag": "text", "text": "测试报告地址：http://www.baidu.com"}],

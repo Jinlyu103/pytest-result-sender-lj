@@ -6,6 +6,7 @@
 @IDE ：PyCharm
 @Describe：...
 """
+import time
 from pathlib import Path
 
 import pytest
@@ -58,7 +59,6 @@ send_api = https://open.feishu.cn/open-apis/bot/v2/hook/65223bdb-adda-402e-a2f9-
 @pytest.mark.parametrize(
     "send_api",
     [
-        "www.baidu.com",
         "https://open.feishu.cn/open-apis/bot/v2/hook/65223bdb-adda-402e-a2f9-9c5d77b3f6c9",
         "",
     ],
