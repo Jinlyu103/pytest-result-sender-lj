@@ -40,12 +40,16 @@ def pytest_collection_finish(session: pytest.Session):
 def pytest_configure(config: pytest.Config):
     # 配置加载完毕之后执行，测试用例执行之前执行
     data["start_time"] = datetime.now()
-    # print(f"{datetime.now()} pytest 开始执行")
     data["send_when"] = config.getini("send_when")
     data["send_api"] = config.getini("send_api")
 
+    # pytest.ini中配置的变量值带% 表示仅占位，支持动态变更
+    if "%" not in config.getini("report_dir"):
+        config.option.report_dir = config.getini("report_dir")
+    data["report_dir"] = config.option.report_dir
 
-def pytest_unconfigure(config: pytest.Config):
+
+def pytest_unconfigure():
     # 配置卸载完毕之后执行，所有测试用例执行之后执行
     data["end_time"] = datetime.now()
     # print(f"{datetime.now()} pytest 结束执行")
@@ -54,8 +58,6 @@ def pytest_unconfigure(config: pytest.Config):
     data["duration"] = f"{int(data['duration'] / 60)}分{int(data['duration'] % 60)}秒"
     data["passed_ratio"] = data["passed"] / data["total"] * 100
     data["passed_ratio"] = f"{data['passed_ratio']:.2f}%"
-
-    data["report_dir"] = config.getini("report_dir")
 
     send_result()
 
