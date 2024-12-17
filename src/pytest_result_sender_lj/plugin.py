@@ -50,7 +50,7 @@ def pytest_unconfigure():
     # print(f"{datetime.now()} pytest 结束执行")
     data["duration"] = data["end_time"] - data["start_time"]
     data["duration"] = data["duration"].total_seconds()
-    data["duration"] = f"{data['duration'] / 60:.1f}分{data['duration'] % 60:.1f}秒"
+    data["duration"] = f"{int(data['duration'] / 60)}分{int(data['duration'] % 60)}秒"
     data["passed_ratio"] = data["passed"] / data["total"] * 100
     data["passed_ratio"] = f"{data['passed_ratio']:.2f}%"
     # print(data)
