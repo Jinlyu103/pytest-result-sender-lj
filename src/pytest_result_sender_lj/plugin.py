@@ -21,6 +21,7 @@ def pytest_addoption(parser):
         help="发送测试结果的时机，every表示每次执行发送，on_fail表示当失败时发送",
     )
     parser.addini("send_api", help="发送测试结果发往哪里")
+    parser.addini("report_dir", help="测试报告地址，可动态配置")
 
 
 # 统计成功/失败的用例数量
@@ -44,7 +45,7 @@ def pytest_configure(config: pytest.Config):
     data["send_api"] = config.getini("send_api")
 
 
-def pytest_unconfigure():
+def pytest_unconfigure(config: pytest.Config):
     # 配置卸载完毕之后执行，所有测试用例执行之后执行
     data["end_time"] = datetime.now()
     # print(f"{datetime.now()} pytest 结束执行")
@@ -53,11 +54,9 @@ def pytest_unconfigure():
     data["duration"] = f"{int(data['duration'] / 60)}分{int(data['duration'] % 60)}秒"
     data["passed_ratio"] = data["passed"] / data["total"] * 100
     data["passed_ratio"] = f"{data['passed_ratio']:.2f}%"
-    # print(data)
-    # assert timedelta(seconds=2.5) <= data['duration'] <= timedelta(seconds=3)
-    # assert data['total'] == 3
-    # assert data['passed'] == 2
-    # assert data['failed'] == 1
+
+    data["report_dir"] = config.getini("report_dir")
+
     send_result()
 
 
@@ -88,7 +87,7 @@ def send_result():
                                 "text": f"测试通过率：{data['passed_ratio']}",
                             }
                         ],
-                        [{"tag": "text", "text": "测试报告地址：http://www.baidu.com"}],
+                        [{"tag": "text", "text": f"测试报告地址：{data['report_dir']}"}],
                     ],
                 }
             }

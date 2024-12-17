@@ -35,6 +35,7 @@ def test_send_when(send_when, pytester: pytest.Pytester, tmp_path: Path):
 [pytest]
 send_when = {send_when}
 send_api = https://open.feishu.cn/open-apis/bot/v2/hook/65223bdb-adda-402e-a2f9-9c5d77b3f6c9
+report_dir = https://www.baidu.com123
         """
     )
     # 断言：配置加载成功
@@ -70,6 +71,7 @@ def test_send_api(send_api, pytester: pytest.Pytester, tmp_path: Path):
 [pytest]
 send_when = every
 send_api = {send_api}
+report_dir = https://www.baidu.com456
             """
     )
     # 断言：配置加载成功
