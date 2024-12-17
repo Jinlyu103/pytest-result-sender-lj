@@ -49,6 +49,8 @@ def pytest_unconfigure():
     data["end_time"] = datetime.now()
     # print(f"{datetime.now()} pytest 结束执行")
     data["duration"] = data["end_time"] - data["start_time"]
+    data["duration"] = data["duration"].total_seconds()
+    data["duration"] = f"{data['duration'] / 60:.1f}分{data['duration'] % 60:.1f}秒"
     data["passed_ratio"] = data["passed"] / data["total"] * 100
     data["passed_ratio"] = f"{data['passed_ratio']:.2f}%"
     # print(data)
@@ -77,7 +79,7 @@ def send_result():
                     "content": [
                         [{"tag": "text", "text": f"测试时间: {data['end_time'].strftime('%Y-%m-%d %H:%M:%S')}"}],
                         [{"tag": "text", "text": f"用例数量: {data['total']}"}],
-                        [{"tag": "text", "text": f"执行时长: {data['duration'].total_seconds()}秒"}],
+                        [{"tag": "text", "text": f"执行时长: {data['duration']}"}],
                         [{"tag": "text", "text": f"测试通过: {data['passed']} "}],
                         [{"tag": "text", "text": f"测试失败: {data['failed']} "}],
                         [
